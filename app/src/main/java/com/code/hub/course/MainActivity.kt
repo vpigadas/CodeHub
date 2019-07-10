@@ -1,11 +1,15 @@
 package com.code.hub.course
 
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : MyActivity() {
+    private val stream: MutableLiveData<ChannelsResponse> = MutableLiveData()
+    private lateinit var recyclerView: RecyclerView
+
     override fun getLayoutRes(): Int  = R.layout.activity_main
 
     override fun initUI() {
@@ -20,18 +24,9 @@ class MainActivity : MyActivity() {
             setTitle(dateTime)
         }
 
-        val recyclerView: RecyclerView? = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerView)
 
         val adapter = ShowNowAdapter(this)
-        adapter.updateData(
-            listOf(
-                ShowNowProgram("ONE", "ONE", "ONE"),
-                ShowNowProgram("TWO", "TWO", "TWO"),
-                ShowNowProgram("THREE", "THREE", "THREE"),
-                ShowNowProgram("FOUR", "FOUR", "FOUR"),
-                ShowNowProgram("FiVE", "FiVE", "FiVE")
-            )
-        )
 
         recyclerView?.adapter = adapter
 
@@ -49,5 +44,18 @@ class MainActivity : MyActivity() {
 //        val toolbar1 = findViewById<Toolbar?>(R.id.toolbar)
     }
 
-    override fun refreshUI() {}
+    override fun refreshUI() {
+        stream.observe(this, androidx.lifecycle.Observer { response ->
+            val adapter = recyclerView.adapter
+            if(adapter is ShowNowAdapter){
+                adapter.updateData(response.channels)
+            }
+        })
+        ApiCLient().getTvProgram(stream)
+    }
+
+    override fun destroyUI() {
+        stream.removeObservers(this)
+        super.destroyUI()
+    }
 }
