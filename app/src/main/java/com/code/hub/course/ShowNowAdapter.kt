@@ -1,11 +1,16 @@
 package com.code.hub.course
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
-class ShowNowAdapter(activitiy: MainActivity) : RecyclerView.Adapter<ShowNowViewHolder>() {
+interface ShowProgramDelegate {
+    fun onclickAction(view: View)
+}
+
+class ShowNowAdapter(val listener: ShowProgramDelegate) : RecyclerView.Adapter<ShowNowViewHolder>() {
 
     private var currentTimestamp: Long
 
@@ -24,7 +29,9 @@ class ShowNowAdapter(activitiy: MainActivity) : RecyclerView.Adapter<ShowNowView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowNowViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.holder_show_now, parent, false)
-        view.setOnClickListener { }
+//        view.setOnClickListener { clickView ->
+//            listener.onclickAction(clickView)
+//        }
         return ShowNowViewHolder(view)
     }
 

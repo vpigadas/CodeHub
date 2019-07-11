@@ -6,24 +6,33 @@
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:cardCornerRadius="8dp"
-        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/main_padding"
+        android:layout_margin="@dimen/main_padding"
         app:cardPreventCornerOverlap="true"
         android:layout_height="wrap_content">
+    <!--app:contentPadding="@dimen/main_padding"-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:layout_height="wrap_content">
-        <ImageView android:layout_width="45dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:background="@drawable/click_selector"
+            android:layout_height="wrap_content">
+
+        <ImageView android:layout_width="70dp"
+                   android:padding="@dimen/main_padding"
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
+                   android:background="@color/colorPrimary"
                    tools:src="@android:drawable/ic_input_add"
                    android:id="@+id/holder_image"
-                   android:layout_height="45dp"/>
+                   android:layout_height="70dp"/>
 
         <TextView
                 android:id="@+id/holder_timestamp"
                 android:layout_width="wrap_content"
                 tools:text="@string/app_name"
+                android:paddingStart="@dimen/main_padding"
+                android:paddingEnd="@dimen/main_padding"
                 app:layout_constraintStart_toEndOf="@id/holder_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -32,16 +41,19 @@
 
         <TextView
                 android:id="@+id/holder_program"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 tools:text="@string/app_name"
                 app:layout_constraintStart_toEndOf="@id/holder_timestamp"
+                app:layout_constraintEnd_toStartOf="@id/holder_arrow"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"/>
 
         <ImageView android:layout_width="25dp"
+                   android:id="@+id/holder_arrow"
                    app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_marginEnd="@dimen/main_padding"
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintBottom_toBottomOf="parent"
                    android:layout_height="wrap_content"

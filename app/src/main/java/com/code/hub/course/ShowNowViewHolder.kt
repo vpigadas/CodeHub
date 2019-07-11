@@ -1,6 +1,7 @@
 package com.code.hub.course
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,10 @@ class ShowNowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         imgProgram = itemView.findViewById(R.id.holder_image)
         txtTimestamp = itemView.findViewById(R.id.holder_timestamp)
         txtProgramName = itemView.findViewById(R.id.holder_program)
+
+        itemView.findViewById<ViewGroup>(R.id.container).setOnClickListener {
+
+        }
     }
 
     fun bind(data: ChannelResponse, timestamp: Long) {

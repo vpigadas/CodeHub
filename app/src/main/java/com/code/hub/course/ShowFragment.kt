@@ -1,25 +1,56 @@
 package com.code.hub.course
 
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.content.Intent
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 
-class ShowFragment : Fragment() {
+class ShowFragment : MyFragment(), ShowProgramDelegate {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_show, container, false)
-    }
-
+    private val stream: MutableLiveData<ChannelsResponse> = MutableLiveData()
+    private lateinit var recyclerView: RecyclerView
 
     companion object {
-        @JvmStatic
         fun newInstance() = ShowFragment()
+    }
+
+    override fun getLayoutRes(): Int = R.layout.fragment_show
+
+    override fun initUI(view: View) {
+        recyclerView = view.findViewById(R.id.recyclerView)
+
+        val adapter = ShowNowAdapter(this)
+        recyclerView?.adapter = adapter
+
+    }
+
+    override fun refreshUI(view: View) {
+        stream.observe(this, androidx.lifecycle.Observer { response ->
+            val adapter = recyclerView.adapter
+            if (adapter is ShowNowAdapter) {
+                adapter.updateData(response.channels)
+            }
+        })
+        ApiCLient().getTvProgram(stream)
+    }
+
+    override fun destroyUI(view: View) {
+        stream.removeObservers(this)
+
+        super.destroyUI(view)
+    }
+
+    override fun onclickAction(view: View) {
+        val position = recyclerView.getChildAdapterPosition(view)
+        val adapter = recyclerView.adapter
+        if (adapter is ShowNowAdapter) {
+            val data = adapter.getItem(position)
+
+            startActivity(Intent(context, DetailsActivity::class.java))
+
+//            Snackbar.make(view, "$data", Snackbar.LENGTH_SHORT).show()
+//            Toast.makeText(view.context, "Hello World", Toast.LENGTH_SHORT).show()
+        }
+
     }
 }
